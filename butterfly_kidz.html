@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Butterfly Kidz Pre School – Where Little Wings Learn to Fly</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #F05A5B;
+    --teal: #2D6E7E;
+    --peach: #F9EBE0;
+    --peach2: #F2D9C8;
+    --yellow: #F5C518;
+    --green: #6DBF67;
+    --blue: #4A9FD4;
+    --dark: #1E3A42;
+    --white: #FFFFFF;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Nunito', sans-serif; background: var(--white); color: var(--dark); overflow-x: hidden; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(255,255,255,0.95); backdrop-filter: blur(14px);
+    border-bottom: 2px solid var(--peach); padding: 8px 40px;
+    display: flex; align-items: center; justify-content: space-between;
+    box-shadow: 0 2px 24px rgba(0,0,0,0.07);
+  }
+  .nav-logo img { height: 58px; object-fit: contain; display: block; }
+  .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-links a {
+    text-decoration: none; color: var(--dark); font-weight: 800; font-size: 14px;
+    transition: color 0.2s; position: relative;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -4px; left: 0; right: 0; height: 2.5px;
+    background: var(--red); transform: scaleX(0); transition: transform 0.25s; border-radius: 4px;
+  }
+  .nav-links a:hover { color: var(--red); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+  .nav-cta {
+    background: var(--red); color: white; border: none; padding: 11px 24px; border-radius: 50px;
+    font-family: 'Baloo 2', cursive; font-weight: 700; font-size: 14px; cursor: pointer;
+    transition: all 0.2s; text-decoration: none; box-shadow: 0 4px 16px rgba(240,90,91,0.38);
+  }
+  .nav-cta:hover { background: var(--teal); transform: translateY(-2px); }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh; background: var(--peach); padding-top: 80px;
+    display: flex; align-items: center; position: relative; overflow: hidden;
+  }
+  #hero::after {
+    content: ''; position: absolute; bottom: -2px; left: 0; right: 0; height: 80px;
+    background: white; clip-path: ellipse(55% 100% at 50% 100%);
+  }
+  .blob { position: absolute; border-radius: 50%; filter: blur(72px); opacity: 0.28; }
+  .blob-1 { width: 520px; height: 520px; background: var(--red); top: -180px; right: -80px; }
+  .blob-2 { width: 360px; height: 360px; background: var(--blue); bottom: -100px; left: 2%; }
+  .blob-3 { width: 280px; height: 280px; background: var(--yellow); top: 35%; left: 38%; }
+  .float-el {
+    position: absolute; pointer-events: none; font-size: 28px; opacity: 0.7; user-select: none;
+    animation: floatEl 4s ease-in-out infinite;
+  }
+  .fl-1 { top: 14%; right: 10%; animation-delay: 0s; font-size: 34px; }
+  .fl-2 { bottom: 18%; left: 6%; animation-delay: 1.2s; font-size: 22px; }
+  .fl-3 { top: 55%; right: 3%; animation-delay: 2.4s; font-size: 20px; }
+  .fl-4 { top: 22%; left: 12%; animation-delay: 0.6s; font-size: 18px; }
+  @keyframes floatEl {
+    0%, 100% { transform: translate(0,0) rotate(-4deg); }
+    40% { transform: translate(8px,-14px) rotate(6deg); }
+    70% { transform: translate(-5px,6px) rotate(-2deg); }
+  }
+  .hero-inner {
+    max-width: 1200px; margin: 0 auto; padding: 60px 40px 110px;
+    display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 64px;
+    align-items: center; position: relative; z-index: 1;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 6px; background: white; color: var(--red);
+    font-family: 'Baloo 2', cursive; font-weight: 700; font-size: 12px; letter-spacing: 1.5px;
+    padding: 6px 18px; border-radius: 50px; margin-bottom: 20px;
+    box-shadow: 0 4px 14px rgba(240,90,91,0.18); animation: fadeUp 0.6s ease both;
+  }
+  .hero-title {
+    font-family: 'Baloo 2', cursive; font-weight: 800;
+    font-size: clamp(36px, 4.5vw, 58px); line-height: 1.1; color: var(--dark);
+    animation: fadeUp 0.7s 0.08s ease both;
+  }
+  .hero-title .r { color: var(--red); }
+  .hero-title .t { color: var(--teal); }
+  .hero-motto {
+    font-size: 18px; color: var(--teal); font-weight: 700; margin: 16px 0 20px;
+    font-style: italic; animation: fadeUp 0.7s 0.16s ease both;
+  }
+  .hero-desc {
+    font-size: 16px; line-height: 1.75; color: #5a6a70;
+    animation: fadeUp 0.7s 0.24s ease both; max-width: 520px;
+  }
+  .hero-btns {
+    display: flex; gap: 16px; margin-top: 34px; flex-wrap: wrap;
+    animation: fadeUp 0.7s 0.32s ease both;
+  }
+  .btn-primary {
+    background: var(--red); color: white; border: none; padding: 14px 32px; border-radius: 50px;
+    font-family: 'Baloo 2', cursive; font-weight: 700; font-size: 16px; cursor: pointer;
+    transition: all 0.25s; text-decoration: none; display: inline-block;
+    box-shadow: 0 6px 22px rgba(240,90,91,0.42);
+  }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(240,90,91,0.48); }
+  .btn-secondary {
+    background: transparent; color: var(--teal); border: 2.5px solid var(--teal);
+    padding: 13px 28px; border-radius: 50px;
+    font-family: 'Baloo 2', cursive; font-weight: 700; font-size: 16px;
+    cursor: pointer; transition: all 0.25s; text-decoration: none; display: inline-block;
+  }
+  .btn-secondary:hover { background: var(--teal); color: white; transform: translateY(-3px); }
+  .hero-visual { animation: fadeUp 0.8s 0.18s ease both; }
+  .hero-card {
+    background: white; border-radius: 32px; padding: 36px 32px 32px;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.11); position: relative; overflow: hidden;
+  }
+  .hero-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px;
+    background: linear-gradient(90deg,var(--red),var(--yellow),var(--green),var(--blue),var(--red));
+    background-size: 200%; animation: shimmer 3s linear infinite;
+  }
+  @keyframes shimmer { 0%{background-position:0%} 100%{background-position:200%} }
+  .hero-logo-wrap { text-align: center; margin-bottom: 28px; padding-top: 8px; }
+  .hero-logo-wrap img { max-width: 230px; width: 100%; height: auto; object-fit: contain; }
+  .pillars { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .pillar {
+    background: var(--peach); border-radius: 18px; padding: 18px 14px; text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s; cursor: default;
+  }
+  .pillar:hover { transform: translateY(-5px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+  .pillar-icon { font-size: 30px; line-height: 1; }
+  .pillar-label { font-size: 12px; color: var(--teal); font-weight: 800; margin-top: 6px; }
+
+  /* SECTION COMMONS */
+  .section-head { text-align: center; margin-bottom: 54px; }
+  .s-tag {
+    display: inline-block; background: var(--peach); color: var(--red);
+    font-family: 'Baloo 2', cursive; font-weight: 700; font-size: 11px;
+    letter-spacing: 2.5px; padding: 5px 18px; border-radius: 50px; margin-bottom: 12px;
+  }
+  .s-title { font-family: 'Baloo 2', cursive; font-size: clamp(26px,3.5vw,42px); font-weight: 800; color: var(--dark); line-height: 1.2; }
+  .s-title .r { color: var(--red); }
+  .s-title .t { color: var(--teal); }
+  .s-sub { font-size: 16px; color: #778; margin-top: 12px; max-width: 520px; margin-left: auto; margin-right: auto; line-height: 1.65; }
+
+  /* ABOUT */
+  #about { background: white; padding: 96px 40px; }
+  .about-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items: center; }
+  .about-text-side .s-tag { display: inline-block; margin-bottom: 12px; }
+  .about-text-side h2 { font-family: 'Baloo 2', cursive; font-size: clamp(24px,3vw,36px); font-weight: 800; color: var(--dark); line-height: 1.2; margin-bottom: 18px; }
+  .about-text-side p { font-size: 15.5px; line-height: 1.8; color: #5a6a70; margin-bottom: 16px; }
+  .about-quote {
+    background: var(--peach); border-left: 4px solid var(--red);
+    border-radius: 0 18px 18px 0; padding: 18px 22px; margin-top: 24px;
+    font-family: 'Baloo 2', cursive; font-size: 16px; color: var(--teal); font-weight: 700; font-style: italic; line-height: 1.55;
+  }
+  .features-list { display: flex; flex-direction: column; gap: 13px; }
+  .feat-item {
+    display: flex; align-items: flex-start; gap: 16px;
+    background: var(--peach); border-radius: 18px; padding: 16px 18px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .feat-item:hover { transform: translateX(6px); box-shadow: 0 6px 20px rgba(0,0,0,0.08); }
+  .feat-icon-box {
+    width: 42px; height: 42px; border-radius: 13px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0; background: white; box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  }
+  .feat-text strong { font-size: 13.5px; font-weight: 800; color: var(--dark); display: block; margin-bottom: 2px; }
+  .feat-text span { font-size: 12.5px; color: #778; line-height: 1.45; }
+
+  /* VISION MISSION */
+  #vision { background: var(--peach); padding: 96px 40px; }
+  .vm-grid { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 36px; }
+  .vm-card {
+    background: white; border-radius: 28px; padding: 42px 38px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.07); position: relative; overflow: hidden;
+    transition: transform 0.3s;
+  }
+  .vm-card:hover { transform: translateY(-6px); }
+  .vm-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 5px; border-radius: 0 0 28px 28px; }
+  .vm-card.vision::after { background: var(--red); }
+  .vm-card.mission::after { background: var(--teal); }
+  .vm-badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 46px; height: 46px; border-radius: 50%; font-size: 20px;
+    margin-bottom: 18px; font-family: 'Baloo 2', cursive; font-weight: 800; color: white;
+  }
+  .vm-card.vision .vm-badge { background: var(--red); }
+  .vm-card.mission .vm-badge { background: var(--teal); }
+  .vm-title { font-family: 'Baloo 2', cursive; font-size: 26px; font-weight: 800; margin-bottom: 14px; }
+  .vm-card.vision .vm-title { color: var(--red); }
+  .vm-card.mission .vm-title { color: var(--teal); }
+  .vm-text { font-size: 15px; line-height: 1.8; color: #5a6a70; }
+
+  /* PROGRAMS */
+  #programs { background: white; padding: 96px 40px; }
+  .programs-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(4,1fr); gap: 24px; }
+  .prog-card {
+    border-radius: 26px; overflow: hidden; box-shadow: 0 6px 28px rgba(0,0,0,0.09);
+    transition: transform 0.3s, box-shadow 0.3s; display: flex; flex-direction: column;
+  }
+  .prog-card:hover { transform: translateY(-10px); box-shadow: 0 18px 48px rgba(0,0,0,0.14); }
+  .prog-top { padding: 34px 24px 22px; text-align: center; flex: 1; }
+  .prog-num {
+    width: 32px; height: 32px; border-radius: 50%;
+    font-family: 'Baloo 2', cursive; font-size: 16px; font-weight: 800; color: white;
+    display: flex; align-items: center; justify-content: center; margin: 0 auto 14px;
+  }
+  .prog-icon { font-size: 46px; margin-bottom: 14px; display: block; }
+  .prog-title { font-family: 'Baloo 2', cursive; font-size: 20px; font-weight: 800; color: var(--dark); }
+  .prog-age {
+    display: inline-block; margin-top: 6px; padding: 3px 14px;
+    border-radius: 50px; font-size: 12px; font-weight: 800; letter-spacing: 0.5px;
+  }
+  .prog-desc-area { background: var(--dark); padding: 18px 20px; }
+  .prog-desc-area p { color: rgba(255,255,255,0.82); font-size: 13px; line-height: 1.65; }
+  .prog-card:nth-child(1) .prog-top { background:#FFF0F0; }
+  .prog-card:nth-child(1) .prog-num { background:var(--red); }
+  .prog-card:nth-child(1) .prog-age { background:rgba(240,90,91,0.12); color:var(--red); }
+  .prog-card:nth-child(2) .prog-top { background:#EAF5F8; }
+  .prog-card:nth-child(2) .prog-num { background:var(--teal); }
+  .prog-card:nth-child(2) .prog-age { background:rgba(45,110,126,0.12); color:var(--teal); }
+  .prog-card:nth-child(3) .prog-top { background:#FFFBEA; }
+  .prog-card:nth-child(3) .prog-num { background:#c9a000; }
+  .prog-card:nth-child(3) .prog-age { background:rgba(245,197,24,0.15); color:#9a7a00; }
+  .prog-card:nth-child(4) .prog-top { background:#EDFAEC; }
+  .prog-card:nth-child(4) .prog-num { background:#4a9f46; }
+  .prog-card:nth-child(4) .prog-age { background:rgba(109,191,103,0.15); color:#3a7d37; }
+
+  /* PARENT MSG */
+  #parents {
+    background: linear-gradient(135deg, var(--teal) 0%, #1a4e5c 100%);
+    padding: 80px 40px; text-align: center; position: relative; overflow: hidden;
+  }
+  #parents::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at 20% 60%, rgba(240,90,91,0.18) 0%, transparent 55%),
+                radial-gradient(circle at 80% 30%, rgba(245,197,24,0.12) 0%, transparent 50%);
+  }
+  .parents-inner { max-width: 720px; margin: 0 auto; position: relative; z-index: 1; }
+  .parents-butterflies { font-size: 36px; letter-spacing: 10px; margin-bottom: 28px; display: block; }
+  .parents-inner h2 { font-family: 'Baloo 2', cursive; font-size: clamp(26px,4vw,40px); font-weight: 800; color: white; margin-bottom: 18px; line-height: 1.2; }
+  .parents-inner h2 span { color: var(--yellow); }
+  .parents-inner p { font-size: 18px; color: rgba(255,255,255,0.82); line-height: 1.75; margin-bottom: 12px; }
+  .parents-inner .highlight { color: var(--yellow); font-weight: 800; font-style: italic; font-size: 20px; }
+  .parents-btn {
+    display: inline-block; margin-top: 32px; background: white; color: var(--red);
+    padding: 15px 38px; border-radius: 50px;
+    font-family: 'Baloo 2', cursive; font-weight: 800; font-size: 17px;
+    text-decoration: none; transition: all 0.25s; box-shadow: 0 8px 28px rgba(0,0,0,0.2);
+  }
+  .parents-btn:hover { background: var(--red); color: white; transform: translateY(-4px); }
+
+  /* CONTACT */
+  #contact { background: var(--peach); padding: 96px 40px; }
+  .contact-inner { max-width: 1060px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.1fr; gap: 56px; align-items: start; }
+  .contact-info-side .s-tag { display: inline-block; margin-bottom: 12px; }
+  .contact-info-side h2 { font-family: 'Baloo 2', cursive; font-size: clamp(24px,3vw,36px); font-weight: 800; color: var(--dark); margin-bottom: 8px; line-height: 1.2; }
+  .contact-info-side .motto-line { font-family: 'Baloo 2', cursive; color: var(--red); font-size: 16px; font-weight: 700; font-style: italic; margin-bottom: 32px; }
+  .c-items { display: flex; flex-direction: column; gap: 18px; }
+  .c-item {
+    display: flex; align-items: flex-start; gap: 16px;
+    background: white; border-radius: 20px; padding: 20px 22px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06); transition: transform 0.2s;
+  }
+  .c-item:hover { transform: translateX(5px); }
+  .c-ico { width: 46px; height: 46px; border-radius: 14px; background: var(--peach); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+  .c-info p.label { font-size: 11px; font-weight: 800; color: #aaa; letter-spacing: 1.5px; text-transform: uppercase; }
+  .c-info p.val { font-size: 14.5px; font-weight: 700; color: var(--dark); margin-top: 3px; line-height: 1.5; }
+  .contact-form-side { background: white; border-radius: 30px; padding: 44px 40px; box-shadow: 0 16px 50px rgba(0,0,0,0.09); }
+  .contact-form-side h3 { font-family: 'Baloo 2', cursive; font-size: 24px; font-weight: 800; color: var(--dark); margin-bottom: 8px; }
+  .contact-form-side p.sub { font-size: 14px; color: #889; margin-bottom: 26px; }
+  .fg { margin-bottom: 16px; }
+  .fg label { display: block; font-size: 12px; font-weight: 800; color: #778; margin-bottom: 5px; letter-spacing: 0.5px; text-transform: uppercase; }
+  .fg input, .fg textarea, .fg select {
+    width: 100%; padding: 12px 16px; border: 2px solid #EBEBEB; border-radius: 14px;
+    font-family: 'Nunito', sans-serif; font-size: 14px; color: var(--dark);
+    background: #FAFAFA; outline: none; transition: border-color 0.2s; resize: none;
+  }
+  .fg input:focus, .fg textarea:focus, .fg select:focus { border-color: var(--teal); background: white; }
+  .fg textarea { height: 82px; }
+  .fg-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .submit-btn {
+    width: 100%; background: var(--red); color: white; border: none;
+    padding: 15px; border-radius: 16px; margin-top: 4px;
+    font-family: 'Baloo 2', cursive; font-weight: 700; font-size: 16px;
+    cursor: pointer; transition: all 0.25s; box-shadow: 0 6px 22px rgba(240,90,91,0.36);
+  }
+  .submit-btn:hover { background: var(--teal); transform: translateY(-2px); }
+
+  /* FOOTER */
+  footer { background: var(--dark); padding: 50px 40px 32px; }
+  .footer-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 50px;
+    padding-bottom: 36px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 26px;
+  }
+  .footer-brand img { max-width: 180px; filter: brightness(10); opacity: 0.9; margin-bottom: 14px; }
+  .footer-brand p { color: rgba(255,255,255,0.55); font-size: 14px; line-height: 1.7; }
+  .footer-brand .motto-f { color: var(--yellow); font-style: italic; font-weight: 700; margin-top: 10px; font-size: 14px; }
+  .footer-col h4 { font-family: 'Baloo 2', cursive; font-weight: 700; color: white; margin-bottom: 14px; font-size: 15px; }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .footer-col ul li a { text-decoration: none; color: rgba(255,255,255,0.55); font-size: 14px; transition: color 0.2s; }
+  .footer-col ul li a:hover { color: var(--yellow); }
+  .footer-col ul li { color: rgba(255,255,255,0.55); font-size: 14px; line-height: 1.5; }
+  .footer-bottom { text-align: center; color: rgba(255,255,255,0.3); font-size: 12px; }
+  .footer-bflies { font-size: 20px; letter-spacing: 8px; display: block; margin-bottom: 8px; }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+  .reveal { opacity:0; transform:translateY(32px); transition: opacity 0.65s ease, transform 0.65s ease; }
+  .reveal.visible { opacity:1; transform:translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .hero-inner, .about-inner, .vm-grid, .contact-inner { grid-template-columns:1fr; gap:40px; }
+    .programs-grid { grid-template-columns:1fr 1fr; }
+    .footer-inner { grid-template-columns:1fr; gap:30px; }
+    nav { padding:10px 20px; }
+    .nav-links { display:none; }
+    .hero-inner { text-align:center; padding-bottom:120px; }
+    .hero-btns { justify-content:center; }
+    .hero-desc { margin:0 auto; }
+    #about, #vision, #programs, #contact { padding:64px 24px; }
+    .section-head { margin-bottom:36px; }
+  }
+  @media (max-width: 520px) {
+    .programs-grid { grid-template-columns:1fr; }
+    .contact-form-side { padding:28px 22px; }
+    .fg-row { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">
+    <img src="Butterfly_kIDZ.png" alt="Butterfly Kidz Pre School Logo">
+  </div>
+  <ul class="nav-links">
+    <li><a href="#hero">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#vision">Vision & Mission</a></li>
+    <li><a href="#programs">Programs</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Enrol Now 🌟</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="blob blob-1"></div><div class="blob blob-2"></div><div class="blob blob-3"></div>
+  <div class="float-el fl-1">🦋</div>
+  <div class="float-el fl-2">🌸</div>
+  <div class="float-el fl-3">🦋</div>
+  <div class="float-el fl-4">⭐</div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-badge">✨ ENROLMENTS OPEN 2025–26</div>
+      <h1 class="hero-title">Where <span class="r">Little Wings</span><br>Learn to <span class="t">Fly</span> 🦋</h1>
+      <p class="hero-motto">"Every child is unique and full of potential"</p>
+      <p class="hero-desc">At Butterfly Kidz Pre School, we provide a safe, happy, and nurturing environment where children learn through play, exploration, and creativity — building strong foundations for lifelong learning and confidence.</p>
+      <div class="hero-btns">
+        <a href="#contact" class="btn-primary">Enrol Your Child 🌟</a>
+        <a href="#about" class="btn-secondary">Learn More →</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-card">
+        <div class="hero-logo-wrap">
+          <img src="Butterfly_kIDZ.png" alt="Butterfly Kidz Pre School">
+        </div>
+        <div class="pillars">
+          <div class="pillar"><div class="pillar-icon">🏡</div><div class="pillar-label">Safe Space</div></div>
+          <div class="pillar"><div class="pillar-icon">🎨</div><div class="pillar-label">Creative Play</div></div>
+          <div class="pillar"><div class="pillar-icon">👩‍🏫</div><div class="pillar-label">Trained Teachers</div></div>
+          <div class="pillar"><div class="pillar-icon">🌱</div><div class="pillar-label">Holistic Growth</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-inner">
+    <div class="about-text-side reveal">
+      <div class="s-tag">ABOUT US</div>
+      <h2>A Place Where <span style="color:var(--red)">Children</span> Truly <span style="color:var(--teal)">Blossom</span></h2>
+      <p>At Butterfly Kidz Pre School, we believe every child is unique and full of potential. Our preschool provides a safe, happy, and nurturing environment where children learn through play, exploration, and creativity.</p>
+      <p>We focus on building strong foundations in learning, confidence, and social skills during the most important early years of your child's life.</p>
+      <div class="about-quote">"Choosing the right preschool is the first step in your child's learning journey. Let your child grow, explore, and shine with us!"</div>
+    </div>
+    <div class="about-features-side reveal reveal-delay-1">
+      <div class="features-list">
+        <div class="feat-item"><div class="feat-icon-box">🏗️</div><div class="feat-text"><strong>Safe & Child-Friendly Infrastructure</strong><span>Classrooms and play areas built with your child's safety and comfort as the top priority.</span></div></div>
+        <div class="feat-item"><div class="feat-icon-box">👩‍🏫</div><div class="feat-text"><strong>Caring & Trained Teachers</strong><span>Our educators are passionate, qualified, and deeply committed to every child's wellbeing.</span></div></div>
+        <div class="feat-item"><div class="feat-icon-box">🎭</div><div class="feat-text"><strong>Activity-Based Learning Approach</strong><span>Learning through doing — hands-on activities that spark curiosity and make concepts stick.</span></div></div>
+        <div class="feat-item"><div class="feat-icon-box">✨</div><div class="feat-text"><strong>Clean & Hygienic Classrooms</strong><span>Neat, sanitised, and cheerful learning spaces that children love coming back to every day.</span></div></div>
+        <div class="feat-item"><div class="feat-icon-box">📲</div><div class="feat-text"><strong>Regular Parent Updates & Interaction</strong><span>We keep families closely involved through consistent updates and open communication.</span></div></div>
+        <div class="feat-item"><div class="feat-icon-box">🧠</div><div class="feat-text"><strong>Emotional, Social & Cognitive Growth</strong><span>A holistic focus that nurtures the whole child — mind, heart, and social skills together.</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VISION & MISSION -->
+<section id="vision">
+  <div class="section-head reveal">
+    <div class="s-tag">OUR PURPOSE</div>
+    <h2 class="s-title">Our <span class="r">Vision</span> &amp; <span class="t">Mission</span></h2>
+    <p class="s-sub">The values and commitments that guide everything we do at Butterfly Kidz.</p>
+  </div>
+  <div class="vm-grid">
+    <div class="vm-card vision reveal">
+      <div class="vm-badge">1</div>
+      <div class="vm-title">🌟 Our Vision</div>
+      <p class="vm-text">At Butterfly Kidz Pre School, our vision is to nurture joyful, confident, and curious children by building a strong foundation for lifelong learning. We imagine every child blossoming into their fullest potential — just like a caterpillar transforms into a beautiful butterfly.</p>
+    </div>
+    <div class="vm-card mission reveal reveal-delay-1">
+      <div class="vm-badge">2</div>
+      <div class="vm-title">💛 Our Mission</div>
+      <p class="vm-text">Our mission is to create a safe and joyful environment where children feel secure, loved, and free to be themselves. We are committed to the holistic development of every child — supporting emotional, social, physical, and cognitive growth through play-based learning, creative activities, and interactive experiences that help children develop confidence, communication skills, and independence at their own pace.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRAMS -->
+<section id="programs">
+  <div class="section-head reveal">
+    <div class="s-tag">PROGRAMS OFFERED</div>
+    <h2 class="s-title">The Right Program for <span class="r">Every</span> Little <span class="t">Learner</span></h2>
+    <p class="s-sub">Age-appropriate programs designed to grow with your child from their very first school experience.</p>
+  </div>
+  <div class="programs-grid">
+    <div class="prog-card reveal">
+      <div class="prog-top">
+        <div class="prog-num">1</div>
+        <span class="prog-icon">🍼</span>
+        <div class="prog-title">Playgroup</div>
+        <span class="prog-age">Age: 2+ years</span>
+      </div>
+      <div class="prog-desc-area"><p>Learning basic words, rhymes, colors, shapes, and social habits through play and interaction in a warm and welcoming setting.</p></div>
+    </div>
+    <div class="prog-card reveal reveal-delay-1">
+      <div class="prog-top">
+        <div class="prog-num">2</div>
+        <span class="prog-icon">🌱</span>
+        <div class="prog-title">Nursery</div>
+        <span class="prog-age">Age: 3+ years</span>
+      </div>
+      <div class="prog-desc-area"><p>Introduction to alphabets, numbers, colors, shapes, rhymes, and creative activities to build early learning skills with confidence.</p></div>
+    </div>
+    <div class="prog-card reveal reveal-delay-2">
+      <div class="prog-top">
+        <div class="prog-num">3</div>
+        <span class="prog-icon">📚</span>
+        <div class="prog-title">LKG</div>
+        <span class="prog-age">Age: 4+ years</span>
+      </div>
+      <div class="prog-desc-area"><p>Learning phonics, letter writing, number concepts, vocabulary building, and fine motor skills through structured and engaging activities.</p></div>
+    </div>
+    <div class="prog-card reveal reveal-delay-3">
+      <div class="prog-top">
+        <div class="prog-num">4</div>
+        <span class="prog-icon">🎓</span>
+        <div class="prog-title">UKG</div>
+        <span class="prog-age">Age: 5+ years</span>
+      </div>
+      <div class="prog-desc-area"><p>Developing reading, writing, basic math, sentence formation, and school readiness skills to prepare confident young learners.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- MESSAGE TO PARENTS -->
+<section id="parents">
+  <div class="parents-inner reveal">
+    <span class="parents-butterflies">🦋 🌸 🐛 🌸 🦋</span>
+    <h2>A Message to <span>Every Parent</span> 💛</h2>
+    <p>Choosing the right preschool is the first and most important step in your child's learning journey.</p>
+    <p class="highlight">Let your child grow, explore, and shine with us!</p>
+    <a href="#contact" class="parents-btn">Enquire About Admission →</a>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-head reveal">
+    <div class="s-tag">VISIT US</div>
+    <h2 class="s-title">Get in <span class="r">Touch</span> With <span class="t">Us</span></h2>
+    <p class="s-sub">We'd love to hear from you and welcome your little one into our Butterfly Kidz family!</p>
+  </div>
+  <div class="contact-inner">
+    <div class="contact-info-side reveal">
+      <div class="s-tag">CONTACT DETAILS</div>
+      <h2>Visit Us <span style="color:var(--red)">Today</span> 🦋</h2>
+      <p class="motto-line">✨ Where Little Wings Learn to Fly</p>
+      <div class="c-items">
+        <div class="c-item"><div class="c-ico">📞</div><div class="c-info"><p class="label">Phone</p><p class="val">+91 95871 09688<br>+91 84364 44908</p></div></div>
+        <div class="c-item"><div class="c-ico">✉️</div><div class="c-info"><p class="label">Email</p><p class="val">butterflykidzslg@gmail.com</p></div></div>
+        <div class="c-item"><div class="c-ico">📍</div><div class="c-info"><p class="label">Address</p><p class="val">47, Netaji Sarani, Haiderpara,<br>Siliguri – 734006</p></div></div>
+      </div>
+    </div>
+    <div class="contact-form-side reveal reveal-delay-1">
+      <h3>Enquire About Admission 🌟</h3>
+      <p class="sub">Fill in the form and we'll get back to you shortly!</p>
+      <div class="fg-row">
+        <div class="fg"><label>Parent's Name</label><input type="text" placeholder="Your full name"></div>
+        <div class="fg"><label>Phone Number</label><input type="tel" placeholder="+91 XXXXX XXXXX"></div>
+      </div>
+      <div class="fg"><label>Email Address</label><input type="email" placeholder="your@email.com"></div>
+      <div class="fg-row">
+        <div class="fg"><label>Child's Name</label><input type="text" placeholder="Child's name"></div>
+        <div class="fg"><label>Program of Interest</label>
+          <select>
+            <option value="">Select program</option>
+            <option>Playgroup (2+ years)</option>
+            <option>Nursery (3+ years)</option>
+            <option>LKG (4+ years)</option>
+            <option>UKG (5+ years)</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg"><label>Message (Optional)</label><textarea placeholder="Any questions or special requirements?"></textarea></div>
+      <button class="submit-btn" onclick="handleSubmit(this)">Send Enquiry 🚀</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="Butterfly_kIDZ.png" alt="Butterfly Kidz Pre School">
+      <p>A safe, nurturing space where every child is celebrated, encouraged, and inspired to reach their fullest potential.</p>
+      <p class="motto-f">✨ "Where Little Wings Learn to Fly"</p>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#vision">Vision & Mission</a></li>
+        <li><a href="#programs">Programs</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact Us</h4>
+      <ul>
+        <li>+91 95871 09688</li>
+        <li>+91 84364 44908</li>
+        <li>butterflykidzslg@gmail.com</li>
+        <li>47, Netaji Sarani, Haiderpara, Siliguri – 734006</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-bflies">🦋 🌸 🐛 🌸 🦋</span>
+    © 2025 Butterfly Kidz Pre School. All rights reserved. · Siliguri, West Bengal
+  </div>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  function handleSubmit(btn) {
+    btn.textContent = "✅ Enquiry Sent! We'll be in touch soon.";
+    btn.style.background = '#6DBF67';
+    btn.disabled = true;
+    setTimeout(() => { btn.textContent = 'Send Enquiry 🚀'; btn.style.background = ''; btn.disabled = false; }, 4000);
+  }
+</script>
+</body>
+</html>
