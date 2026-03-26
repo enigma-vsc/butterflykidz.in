@@ -180,25 +180,50 @@
     <div class="contact-form-side reveal reveal-delay-1">
       <h3>Enquire About Admission 🌟</h3>
       <p class="sub">Fill in the form and we'll get back to you shortly!</p>
-      <div class="fg-row">
-        <div class="fg"><label>Parent's Name</label><input type="text" placeholder="Your full name"></div>
-        <div class="fg"><label>Phone Number</label><input type="tel" placeholder="+91 XXXXX XXXXX"></div>
-      </div>
-      <div class="fg"><label>Email Address</label><input type="email" placeholder="your@email.com"></div>
-      <div class="fg-row">
-        <div class="fg"><label>Child's Name</label><input type="text" placeholder="Child's name"></div>
-        <div class="fg"><label>Program of Interest</label>
-          <select>
-            <option value="">Select program</option>
-            <option>Playgroup (2+ years)</option>
-            <option>Nursery (3+ years)</option>
-            <option>LKG (4+ years)</option>
-            <option>UKG (5+ years)</option>
-          </select>
+      
+      <form id="enquiryForm">
+        <div class="fg-row">
+          <div class="fg">
+            <label>Parent's Name</label>
+            <input type="text" name="parent_name" placeholder="Your full name" required>
+          </div>
+          <div class="fg">
+            <label>Phone Number</label>
+            <input type="tel" name="phone" placeholder="+91 XXXXX XXXXX" required>
+          </div>
         </div>
-      </div>
-      <div class="fg"><label>Message (Optional)</label><textarea placeholder="Any questions or special requirements?"></textarea></div>
-      <button class="submit-btn" onclick="handleSubmit(this)">Send Enquiry 🚀</button>
+        
+        <div class="fg">
+          <label>Email Address</label>
+          <input type="email" name="email" placeholder="your@email.com">
+        </div>
+        
+        <div class="fg-row">
+          <div class="fg">
+            <label>Child's Name</label>
+            <input type="text" name="child_name" placeholder="Child's name" required>
+          </div>
+          <div class="fg">
+            <label>Program of Interest</label>
+            <select name="program" required>
+              <option value="">Select program</option>
+              <option>Playgroup (2+ years)</option>
+              <option>Nursery (3+ years)</option>
+              <option>LKG (4+ years)</option>
+              <option>UKG (5+ years)</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="fg">
+          <label>Message (Optional)</label>
+          <textarea name="message" placeholder="Any questions or special requirements?"></textarea>
+        </div>
+        
+        <button type="submit" id="submitBtn" class="submit-btn">Send Enquiry 🚀</button>
+      </form>
+      
+      <div id="submitStatus" class="submit-status"></div>
     </div>
   </div>
 </section>
@@ -238,17 +263,70 @@
 </footer>
 
 <script>
+  // ── Scroll reveal ──
   const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
-  }, { threshold: 0.1 });
+    entries.forEach(e => { if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);} });
+  }, {threshold:0.1});
   document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
-  function handleSubmit(btn) {
-    btn.textContent = "✅ Enquiry Sent! We'll be in touch soon.";
-    btn.style.background = '#6DBF67';
+  // ── CONFIG ──
+  const SHEETS_URL = 'https://script.google.com/macros/s/AKfycby6ES_SnYkmXW09-bKp5-NrLtgC0C3tuNHsoRkpbLhoaC6d-jK6h1QwW8roe8z9jqJf/exec';  // Replace after Google Sheets setup
+
+  // ── Form submit handler ──
+  document.getElementById('enquiryForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn    = document.getElementById('submitBtn');
+    const status = document.getElementById('submitStatus');
+    const form   = e.target;
+
+    const data = {
+      parent_name : form.parent_name.value,
+      phone       : form.phone.value,
+      email       : form.email.value || '(not provided)',
+      child_name  : form.child_name.value,
+      program     : form.program.value,
+      message     : form.message.value || '(none)',
+    };
+
     btn.disabled = true;
-    setTimeout(() => { btn.textContent = 'Send Enquiry 🚀'; btn.style.background = ''; btn.disabled = false; }, 4000);
-  }
+    btn.textContent = 'Sending… ⏳';
+    status.className = 'submit-status sending';
+    status.textContent = 'Sending your enquiry…';
+
+    // ── Google Sheets via Apps Script ──
+    try {
+      if (SHEETS_URL !== 'YOUR_APPS_SCRIPT_URL') {
+        await fetch(SHEETS_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({...data, timestamp: new Date().toLocaleString('en-IN')})
+        });
+        status.className = 'submit-status success';
+        status.innerHTML = '✅ Enquiry sent! We\'ll be in touch soon. 🦋';
+        btn.textContent  = '✅ Enquiry Sent!';
+      } else {
+        status.className = 'submit-status error';
+        status.textContent = '⚠️ Google Sheets not configured yet.';
+        btn.disabled = false;
+        btn.textContent = 'Send Enquiry 🚀';
+        return;
+      }
+    } catch(err) {
+      status.className = 'submit-status error';
+      status.textContent = '❌ Something went wrong. Please try again.';
+      btn.disabled = false;
+      btn.textContent = 'Send Enquiry 🚀';
+      return;
+    }
+
+    setTimeout(() => {
+      form.reset();
+      btn.disabled     = false;
+      btn.textContent  = 'Send Enquiry 🚀';
+      status.className = 'submit-status';
+    }, 5000);
+  });
 </script>
 </body>
 </html>
