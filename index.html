@@ -188,8 +188,15 @@
             <input type="text" name="parent_name" placeholder="Your full name" required>
           </div>
           <div class="fg">
-            <label>Phone Number</label>
-            <input type="tel" name="phone" placeholder="+91 XXXXX XXXXX" required>
+            <label>Phone Number <span class="required">*</span></label>
+            <input 
+              type="tel" 
+              id="phone" 
+              name="phone" 
+              placeholder="9587109688" 
+              maxlength="13"
+              required>
+            <small id="phone-error" class="error-msg"></small>
           </div>
         </div>
         
@@ -263,70 +270,118 @@
 </footer>
 
 <script>
-  // ── Scroll reveal ──
+  // Scroll reveal
   const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);} });
-  }, {threshold:0.1});
+    entries.forEach(e => { 
+      if(e.isIntersecting){ 
+        e.target.classList.add('visible'); 
+        obs.unobserve(e.target); 
+      } 
+    });
+  }, { threshold: 0.1 });
+
   document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
-  // ── CONFIG ──
-  const SHEETS_URL = 'https://script.google.com/macros/s/AKfycby6ES_SnYkmXW09-bKp5-NrLtgC0C3tuNHsoRkpbLhoaC6d-jK6h1QwW8roe8z9jqJf/exec';  // Replace after Google Sheets setup
+  // ── Phone Number Validation ──
+  function validateIndianPhone(phone) {
+    // Remove all non-digit characters
+    const cleaned = phone.replace(/\D/g, '');
+    
+    // Indian mobile numbers: 10 digits (or 11/12 with +91 or 0)
+    if (cleaned.length === 10) {
+      return true;                    // 10 digit number (best case)
+    }
+    if (cleaned.length === 11 && cleaned.startsWith('0')) {
+      return true;                    // 0xxxxxxxxx
+    }
+    if ((cleaned.length === 12 || cleaned.length === 13) && cleaned.startsWith('91')) {
+      return true;                    // 91xxxxxxxxxx or +91xxxxxxxxxx
+    }
+    return false;
+  }
 
-  // ── Form submit handler ──
-  document.getElementById('enquiryForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    const btn    = document.getElementById('submitBtn');
-    const status = document.getElementById('submitStatus');
-    const form   = e.target;
+  // Phone validation helpers
+  const phoneInput = document.getElementById('phone');
+  const phoneError = document.getElementById('phone-error');
 
-    const data = {
-      parent_name : form.parent_name.value,
-      phone       : form.phone.value,
-      email       : form.email.value || '(not provided)',
-      child_name  : form.child_name.value,
-      program     : form.program.value,
-      message     : form.message.value || '(none)',
-    };
+  // Clear any error when user edits value (deferred validation until submit)
+  if (phoneInput) {
+    phoneInput.addEventListener('input', function() {
+      if (this.value.trim() === '') {
+        phoneError.textContent = '';
+        this.style.borderColor = '';
+      } else {
+        // Keep the input neutral while typing; final validation is at submit
+        phoneError.textContent = '';
+        this.style.borderColor = '';
+      }
+    });
+  }
 
-    btn.disabled = true;
-    btn.textContent = 'Sending… ⏳';
-    status.className = 'submit-status sending';
-    status.textContent = 'Sending your enquiry…';
+  // ── Form Submit Handler with Validation ──
+  const form = document.getElementById('enquiryForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const submitStatus = document.getElementById('submitStatus');
 
-    // ── Google Sheets via Apps Script ──
-    try {
-      if (SHEETS_URL !== 'YOUR_APPS_SCRIPT_URL') {
+  if (form) {
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const phoneValue = phoneInput ? phoneInput.value.trim() : '';
+
+      // Final validation before submit
+      if (!validateIndianPhone(phoneValue)) {
+        phoneError.textContent = '❌ Please enter a valid Indian phone number';
+        phoneError.style.color = '#dc3545';
+        phoneInput.focus();
+        return;
+      }
+
+      // Disable button and show sending state
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending… ⏳';
+      submitStatus.className = 'submit-status sending';
+      submitStatus.textContent = 'Sending your enquiry…';
+
+      const data = {
+        parent_name : form.parent_name.value,
+        phone       : phoneValue,
+        email       : form.email.value || '(not provided)',
+        child_name  : form.child_name.value,
+        program     : form.program.value,
+        message     : form.message.value || '(none)',
+        timestamp   : new Date().toLocaleString('en-IN')
+      };
+
+      const SHEETS_URL = 'https://script.google.com/macros/s/AKfycby6ES_SnYkmXW09-bKp5-NrLtgC0C3tuNHsoRkpbLhoaC6d-jK6h1QwW8roe8z9jqJf/exec';
+
+      try {
         await fetch(SHEETS_URL, {
           method: 'POST',
           mode: 'no-cors',
-          headers: {'Content-Type':'application/json'},
-          body: JSON.stringify({...data, timestamp: new Date().toLocaleString('en-IN')})
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
         });
-        status.className = 'submit-status success';
-        status.innerHTML = '✅ Enquiry sent! We\'ll be in touch soon. 🦋';
-        btn.textContent  = '✅ Enquiry Sent!';
-      } else {
-        status.className = 'submit-status error';
-        status.textContent = '⚠️ Google Sheets not configured yet.';
-        btn.disabled = false;
-        btn.textContent = 'Send Enquiry 🚀';
-        return;
-      }
-    } catch(err) {
-      status.className = 'submit-status error';
-      status.textContent = '❌ Something went wrong. Please try again.';
-      btn.disabled = false;
-      btn.textContent = 'Send Enquiry 🚀';
-      return;
-    }
 
-    setTimeout(() => {
-      form.reset();
-      btn.disabled     = false;
-      btn.textContent  = 'Send Enquiry 🚀';
-      status.className = 'submit-status';
-    }, 5000);
-  });
+        submitStatus.className = 'submit-status success';
+        submitStatus.innerHTML = '✅ Enquiry sent successfully! We\'ll contact you soon. 🦋';
+        submitBtn.textContent = '✅ Enquiry Sent!';
+        form.reset();
+        
+        // Clear phone error
+        phoneError.textContent = '';
+        
+      } catch (err) {
+        submitStatus.className = 'submit-status error';
+        submitStatus.textContent = '❌ Failed to send. Please try again or call us directly.';
+      } finally {
+        setTimeout(() => {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Send Enquiry 🚀';
+        }, 4000);
+      }
+    });
+  }
 </script>
 </body>
 </html>
